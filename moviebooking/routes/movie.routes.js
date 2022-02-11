@@ -8,13 +8,17 @@ module.exports = (express, app) => {
 
     router.get('/:id/shows', movie.findShows);
 
-    router.get("/published", movie.getAllPublishedMovies)
+    router.get("/?status=PUBLISHED", movie.findAllMovies);
+
+    router.get("/?status=RELEASED", movie.findAllMovies);
+
+    router.get("/?status=RELEASED&title={title}&genres={genres}&artists={artists}&start_date={startdate}&end_date={enddate}", movie.findAllMovies);
 
 
 
 
 
-    app.use('/app/movies', router);
+    app.use('/api/movies', router);
 }
 
 
