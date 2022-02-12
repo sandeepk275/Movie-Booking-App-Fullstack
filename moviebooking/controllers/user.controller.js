@@ -23,9 +23,9 @@ exports.signUp = (req, res) => {
         } else {
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(req.body.password, salt);
-           
+
             const user = new User({
-                
+
                 userid: uuidv4(),
                 email: req.body.email,
                 first_name: req.body.first_name,
@@ -33,7 +33,7 @@ exports.signUp = (req, res) => {
                 contact: req.body.contact,
                 password: hash,
             });
-            user.username=user.first_name+user.last_name;
+            user.username = user.first_name + user.last_name;
             user.save(user).then((data) => {
                 res.status(200).send(data);
             }).catch((err) => {
@@ -61,7 +61,7 @@ exports.login = (req, res) => {
             res.status(401).send({ message: "username or password is incorrect" })
         } else {
 
-            if (bcrypt.compareSync(req.body.password, user.password)){   // user has all object that particular email
+            if (bcrypt.compareSync(req.body.password, user.password)) {   // user has all object that particular email
                 // udating the user loggedIn true
                 user.isLoggedIn = true;
                 user.uuid = uuidv4();
@@ -93,7 +93,7 @@ exports.logOut = (req, res) => {
     }
 
     const update = { isLoggedIn: false };
-    const filter = { userid: req.body.userid};
+    const filter = { userid: req.body.userid };
     User.findOneAndUpdate(filter, update, { new: true })
         .then((user) => {
             res.json({
@@ -104,4 +104,37 @@ exports.logOut = (req, res) => {
         .catch(() => {
             res.status(500).send({ message: "some error ocurred" })
         })
+}
+//>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>..................
+exports.getCouponCode = (req, res) => {
+    const accesstoken = req.headers["authorization"];
+
+    User.find({ accesstoken: accesstoken }).then((users) => {
+        if (users[0].coupens) {
+            res.send(users[0].coupens);
+        } else {
+            res.send([]);
+        }
+    }).catch((err) => {
+        return res.status(500).send(err.message || "user not found");
+    })
+}
+
+//>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>....................
+
+exports.bookShow = (req, res) => {
+
+    const uuid = req.body.uuid;
+    const bookingRequest = req.body.bookingRequest;
+    User.findOneAndUpdate({ uuid: uuid }, { $push: { bookingRequests: bookingRequest } }, { new: true })
+        .then(data => {
+            if (!data) throw new Error("unable to book show dont have data");
+           
+            res.status(200).send(bookingRequest);
+           
+        })
+        .catch(err => {
+            res.status(500).send(err.message || "unable to book show");
+        });
+
 }

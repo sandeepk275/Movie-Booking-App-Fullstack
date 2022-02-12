@@ -1,5 +1,6 @@
 module.exports = (express, app) => {
     const user = require('../controllers/user.controller');
+    const auth = require('../middleware/auth');
     var router = express.Router();
 
     router.post('/sign-up', user.signUp);
@@ -7,6 +8,10 @@ module.exports = (express, app) => {
     router.post('/login', user.login);
 
     router.post('/logout', user.logOut);
+
+    router.get('/coupons', auth, user.getCouponCode);
+
+    router.post('/bookings', auth, user.bookShow );
 
 
 

@@ -36,22 +36,6 @@ exports.findAllMovies = async (req, res)=>{
         res.status(500).send(err.message || "some internal error occurred");
     }
 
-
-
-
-
-
-    // Movie.find({}).then((data) => {
-    //     res.status(200).send({
-    //         movies: data,
-    //         message: "retrieve all movies successful"
-    //     })
-    // }).catch((err) => {
-    //     res.status(404).send({
-    //         message: err.message || "not found",
-    //     })
-    // })
-
 }
 
 
@@ -86,31 +70,31 @@ exports.findShows = (req, res) => {
 
 }
 
-exports.getAllPublishedMovies = (req, res) => {
-    const filter = { published: true };
-    Tutorial.find(filter).sort("-createdAt").then((data) => {
-        res.status(200).send({
-            publishedMovies: data,
-            message: "fetch data by published successful"
-        })
-    }).catch((err) => {
-        res.status(500).send({
-            message: err.message || "some error while fetching the data",
-        })
-    })
-}
+// exports.getAllPublishedMovies = (req, res) => {
+//     const filter = { published: true };
+//     Tutorial.find(filter).sort("-createdAt").then((data) => {
+//         res.status(200).send({
+//             publishedMovies: data,
+//             message: "fetch data by published successful"
+//         })
+//     }).catch((err) => {
+//         res.status(500).send({
+//             message: err.message || "some error while fetching the data",
+//         })
+//     })
+// }
 
 
-exports.getAllReleasedMovies = (req, res) => {
-    const filter = { published: true };
-    Tutorial.find(filter).sort("-createdAt").then((data) => {
-        res.status(200).send({
-            publishedMovies: data,
-            message: "fetch data by published successful"
-        })
-    }).catch((err) => {
-        res.status(500).send({
-            message: err.message || "some error while fetching the data",
-        })
-    })
-}
+// exports.getAllReleasedMovies = (req, res) => {
+//     const filter = { published: true };
+//     Tutorial.find(filter).sort("-createdAt").then((data) => {
+//         res.status(200).send({
+//             publishedMovies: data,
+//             message: "fetch data by published successful"
+//         })
+//     }).catch((err) => {
+//         res.status(500).send({
+//             message: err.message || "some error while fetching the data",
+//         })
+//     })
+// }
