@@ -41,8 +41,9 @@ class BookShow extends Component {
         let xhrShows = new XMLHttpRequest();
         xhrShows.addEventListener("readystatechange", (function () {
             if (xhrShows.readyState === 4) {
-                debugger;
-                let response = JSON.parse(xhrShows.responseText)[0];
+                // debugger;
+                let response = JSON.parse(xhrShows.responseText).MovieById[0];
+                console.log(JSON.parse(xhrShows.responseText));
                 this.setState({ originalShows: response.shows });
                 let newLocations = [];
 
@@ -66,7 +67,7 @@ class BookShow extends Component {
     }
 
     locationChangeHandler = ((event) => {
-        debugger;
+        // debugger;
         this.setState({ location: event.target.value });
         let newTheatres = [];
 

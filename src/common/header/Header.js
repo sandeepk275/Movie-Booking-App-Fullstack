@@ -100,6 +100,7 @@ class Header extends Component {
         let that = this;
         xhrLogin.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
+                console.log(JSON.parse(this.responseText))
                 sessionStorage.setItem("uuid", JSON.parse(this.responseText).id);
                 //sessionStorage.setItem("access-token", xhrLogin.getResponseHeader("access-token"));
 
@@ -196,6 +197,7 @@ class Header extends Component {
         let that = this;
         xhrSignout.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
+                console.log(JSON.parse(this.responseText))
                 if(JSON.parse(this.responseText).message == "Logged Out successfully.")
                 {
                     sessionStorage.removeItem("uuid");

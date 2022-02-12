@@ -70,31 +70,4 @@ exports.findShows = (req, res) => {
 
 }
 
-// exports.getAllPublishedMovies = (req, res) => {
-//     const filter = { published: true };
-//     Tutorial.find(filter).sort("-createdAt").then((data) => {
-//         res.status(200).send({
-//             publishedMovies: data,
-//             message: "fetch data by published successful"
-//         })
-//     }).catch((err) => {
-//         res.status(500).send({
-//             message: err.message || "some error while fetching the data",
-//         })
-//     })
-// }
 
-
-// exports.getAllReleasedMovies = (req, res) => {
-//     const filter = { published: true };
-//     Tutorial.find(filter).sort("-createdAt").then((data) => {
-//         res.status(200).send({
-//             publishedMovies: data,
-//             message: "fetch data by published successful"
-//         })
-//     }).catch((err) => {
-//         res.status(500).send({
-//             message: err.message || "some error while fetching the data",
-//         })
-//     })
-// }

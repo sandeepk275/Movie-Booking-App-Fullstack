@@ -69,9 +69,10 @@ exports.login = (req, res) => {
                 // const update = { isLoggedIn: true };
                 User.findOneAndUpdate(filter, user, { new: true })
                     .then((user) => {
-                        res.json(
-                            user
-                        )
+                        res.status(200).json({
+                            id: user.uuid,
+                            "access-token": user.accesstoken,
+                        })
                     })
                     .catch(() => {
                         res.status(500).send({ message: "some error ocurred" })
@@ -87,18 +88,18 @@ exports.login = (req, res) => {
 //>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>............................
 exports.logOut = (req, res) => {
     // validation of request
-    if (!req.body.userid) {
-        res.status(400).send({ message: "please provide userid" });
+    if (!req.body._id) {
+        res.status(400).send({ message: "please provide id" });
         return;
     }
 
     const update = { isLoggedIn: false };
-    const filter = { userid: req.body.userid };
+    const filter = { userid: req.body._id };
     User.findOneAndUpdate(filter, update, { new: true })
         .then((user) => {
             res.json({
                 userDetail: user,
-                message: "logout successfully"
+                message: "Logged Out successfully."
             })
         })
         .catch(() => {
