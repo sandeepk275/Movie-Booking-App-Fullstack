@@ -4,6 +4,10 @@ const { v4: uuidv4 } = require('uuid');
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
+const TokenGenerator = require("uuid-token-generator");
+const { atob, btoa } = require("b2a");
+const tokenGenerator = new TokenGenerator();
+
 const User = db.user;
 
 //...>>>>...........................>>>>>>...............................>>>>>>>>>>.............................
@@ -46,30 +50,35 @@ exports.signUp = (req, res) => {
 
 //.........................>>>>>>>>...................................>>>>>>>>>>>..............................
 exports.login = (req, res) => {
+    const encodedAuth = req.headers["authorization"];
+    const userNameAndPassword = atob(encodedAuth.split(" ")[1]);
+    const username = userNameAndPassword.split(":")[0];
+    const password = userNameAndPassword.split(":")[1];
     // validation of request
-    if (!req.body.username || !req.body.password) {
+    if (!username || !password) {
         res.status(400).send({ message: "please provide username and password" });
         return;
     }
 
     //matching the first email then password..
+    
 
-    const filter = { username: req.body.username };
+    const filter = { username: username };
 
     User.findOne(filter, (err, user) => {
         if (err || user === null) {
             res.status(401).send({ message: "username or password is incorrect" })
         } else {
 
-            if (bcrypt.compareSync(req.body.password, user.password)) {   // user has all object that particular email
+            if (user.password=password) {   // user has all object that particular email
                 // udating the user loggedIn true
                 user.isLoggedIn = true;
                 user.uuid = uuidv4();
-                user.accesstoken = jwt.sign({ _id: user._id }, "myprivatekey");
+                user.accesstoken = tokenGenerator.generate();
                 // const update = { isLoggedIn: true };
-                User.findOneAndUpdate(filter, user, { new: true })
+                User.findOneAndUpdate(filter, user)
                     .then((user) => {
-                        res.status(200).json({
+                        res.status(200).send({
                             id: user.uuid,
                             "access-token": user.accesstoken,
                         })
@@ -87,25 +96,18 @@ exports.login = (req, res) => {
 }
 //>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>............................
 exports.logOut = (req, res) => {
-    // validation of request
-    if (!req.body._id) {
-        res.status(400).send({ message: "please provide id" });
-        return;
-    }
-
-    const update = { isLoggedIn: false };
-    const filter = { userid: req.body._id };
-    User.findOneAndUpdate(filter, update, { new: true })
-        .then((user) => {
-            res.json({
-                userDetail: user,
-                message: "Logged Out successfully."
-            })
+    const uuid = req.body.uuid;
+    const update = { isLoggedIn: false, accesstoken: "", uuid: "" };
+    User.findOneAndUpdate({ uuid: uuid }, update, { useFindAndModify: false })
+        .then(data => {
+            if (data === null) throw new error("unable to logout");
+            res.send({ message: "Logged Out successfully." });
         })
-        .catch(() => {
-            res.status(500).send({ message: "some error ocurred" })
-        })
+        .catch(err => {
+            res.status(500).send(err.message);
+        });
 }
+
 //>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>..................
 exports.getCouponCode = (req, res) => {
     const accesstoken = req.headers["authorization"];

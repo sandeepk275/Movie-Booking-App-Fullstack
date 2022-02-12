@@ -9,6 +9,7 @@
   "author": "sandeep kumar",
   "license": "ISC",
   "dependencies": {
+    "b2a": "^1.1.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
