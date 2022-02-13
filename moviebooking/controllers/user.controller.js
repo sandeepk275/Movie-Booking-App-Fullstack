@@ -25,17 +25,17 @@ exports.signUp = (req, res) => {
         if (err || user !== null) {
             res.status(400).send({ message: "user already exist" })
         } else {
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(req.body.password, salt);
+            // const salt = bcrypt.genSaltSync(10);
+            // const hash = bcrypt.hashSync(req.body.password, salt);
 
             const user = new User({
 
                 userid: uuidv4(),
-                email: req.body.email,
+                email: req.body.email_address,
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
-                contact: req.body.contact,
-                password: hash,
+                contact: req.body.mobile_number,
+                password: req.body.password,
             });
             user.username = user.first_name + user.last_name;
             user.save(user).then((data) => {
@@ -76,7 +76,7 @@ exports.login = (req, res) => {
                 user.uuid = uuidv4();
                 user.accesstoken = tokenGenerator.generate();
                 // const update = { isLoggedIn: true };
-                User.findOneAndUpdate(filter, user)
+                User.findOneAndUpdate(filter, user,{new: true})
                     .then((user) => {
                         res.status(200).send({
                             id: user.uuid,
@@ -110,7 +110,11 @@ exports.logOut = (req, res) => {
 
 //>>>>>.......................>>>>>>>>>>>>>>>>>>......................>>>>>>>>>>>>>>>>>>>..................
 exports.getCouponCode = (req, res) => {
-    const accesstoken = req.headers["authorization"];
+    // const accesstoken = req.headers["authorization"];
+    // const accesstoken = atob(req.header["authorization"][1]);
+    // if (!accesstoken) {
+    //     return res.status(401).send("user not logged in");
+    // }
 
     User.find({ accesstoken: accesstoken }).then((users) => {
         if (users[0].coupens) {
@@ -127,9 +131,16 @@ exports.getCouponCode = (req, res) => {
 
 exports.bookShow = (req, res) => {
 
-    const uuid = req.body.uuid;
+    // const accesstoken = atob(req.header["authorization"].split(" ")[1]);
+    // console.log(accesstoken);
+    // if (!accesstoken) {
+    //     return res.status(401).send("user not logged in");
+    // }
+
+    
+    const uuid = req.body.customerUuid;
     const bookingRequest = req.body.bookingRequest;
-    User.findOneAndUpdate({ uuid: uuid }, { $push: { bookingRequests: bookingRequest } }, { new: true })
+    User.findOneAndUpdate({ uuid: uuid }, { $push: { bookingRequests: bookingRequest } })
         .then(data => {
             if (!data) throw new Error("unable to book show dont have data");
            

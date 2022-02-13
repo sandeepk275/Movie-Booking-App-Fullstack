@@ -135,7 +135,7 @@ class BookShow extends Component {
             if (show.theatre.city === this.state.location && show.theatre.name === this.state.theatre && show.language === this.state.language && show.show_timing === event.target.value) {
                 unitPrice = show.unit_price;
                 availableTickets = show.available_seats;
-                debugger;
+                // debugger;
                 this.setState({ showId: show.id });
             }
         }
@@ -155,7 +155,7 @@ class BookShow extends Component {
         this.state.tickets === 0 ? this.setState({ reqTickets: "dispBlock" }) : this.setState({ reqTickets: "dispNone" });
 
         if ((this.state.location === "") || (this.state.theatre === "") || (this.state.language === "") || (this.state.showDate === "") || (this.state.tickets === 0)) { return; }
-        debugger;
+        // debugger;
         this.props.history.push({
             pathname: '/confirm/' + this.props.match.params.id,
             bookingSummary: this.state

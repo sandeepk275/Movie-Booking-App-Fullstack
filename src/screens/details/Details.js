@@ -53,7 +53,6 @@ class Details extends Component {
         xhrMovie.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 // debugger;
-                console.log(JSON.parse(this.responseText).MovieById[0]);
                 that.setState({
                     movie: JSON.parse(this.responseText).MovieById[0]
                 });
@@ -164,7 +163,7 @@ class Details extends Component {
                                     <GridListTile
                                         className="gridTile"
                                         onClick={() => this.artistClickHandler(artist.wiki_url)}
-                                        key={artist.id}>
+                                        key={artist.artistid}>
                                         <img src={artist.profile_url} alt={artist.first_name + " " + artist.last_name} />
                                         <GridListTileBar
                                             title={artist.first_name + " " + artist.last_name}

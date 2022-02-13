@@ -1,5 +1,5 @@
 const db = require('../models/index');
-const Genre = db.artist;
+const Genre = db.genre;
 
 
 exports.findAllGenres = (req, res) => {
