@@ -43,7 +43,7 @@ class BookShow extends Component {
             if (xhrShows.readyState === 4) {
                 // debugger;
                 let response = JSON.parse(xhrShows.responseText).MovieById[0];
-                console.log(JSON.parse(xhrShows.responseText));
+               
                 this.setState({ originalShows: response.shows });
                 let newLocations = [];
 

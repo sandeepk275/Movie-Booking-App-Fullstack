@@ -49,7 +49,7 @@ class Confirmation extends Component {
   }
 
   confirmBookingHandler = () => {
-    console.log(this.props.location.bookingSummary.showId);
+    // console.log(this.props.location.bookingSummary.showId);
     let data = JSON.stringify({
       "customerUuid": sessionStorage.getItem('uuid'),
       "bookingRequest": {
@@ -76,7 +76,7 @@ class Confirmation extends Component {
     xhr.setRequestHeader("Cache-Control", "no-cache");
     xhr.setRequestHeader("Content-Type", "application/json");
     
-    console.log(data);
+    // console.log(data);
     // debugger;
     xhr.send(data);
 
